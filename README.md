@@ -75,3 +75,10 @@ This is the final output. It is necessary to select a year and a week and the ou
 - Martino Trevisan [@marty90](https://github.com/marty90)
 - Luca Vassio [@Luca2030](https://github.com/Luca2030)
 
+
+## Acknowledgements
+
+This work has been supported by the FacciamolaFacile grant funded by Fondazione TIM for the project 'Reading (\&) Machine' and by the SmartData@PoliTO center for Big Data and Data Science.
+
+
+
