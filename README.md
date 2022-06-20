@@ -2,6 +2,7 @@
 # Disentangling posts on OSNs: Notable posts and topics
 
 Complete Python code of the methodology used to identify notable posts and topics on Online Social Networks.
+Intermediate steps results are stored in CSV files.
 
 ## Dataset transformation
 
@@ -36,7 +37,7 @@ Find anomalies (notable posts) for the influencers through the Boxplot Rule meth
 
 ## ANOMALY DETECTION
 
-Apply the Boxplot Rule method to extract **notable posts** for each influencer and save them in a csv file ("anomalies.csv").
+Apply the Boxplot Rule method to extract **notable posts** for each influencer and save them in a CSV file ("anomalies.csv").
 * **Output**: the same previous Pandas DataFrame with the following column in addition:
     * **n_anomalies**: number of anomalies for each week.
 
@@ -63,7 +64,7 @@ We build a graph for each time step, where each node represents a post, connecte
     * **median_clustering_coeff**: median of the clustering coefficient of the nodes in the graph.
     
 Here, the term "graph" refers to the graph of notable posts of each week.
-The ouput DataFrame is then saved in a csv file ("communities.csv").
+The ouput DataFrame is then saved in a CSV file ("communities.csv").
 
 ## WORDCLOUDS per community per week
 
