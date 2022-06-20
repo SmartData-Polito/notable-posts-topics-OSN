@@ -2,7 +2,6 @@
 # Disentangling posts on OSNs: Notable posts and topics
 
 Complete Python code of the methodology used to identify notable posts and topics on Online Social Networks.
-Intermediate steps are stored in CSV files.
 
 ## Dataset transformation
 
@@ -37,11 +36,19 @@ Find anomalies (notable posts) for the influencers through the Boxplot Rule meth
 
 ## ANOMALY DETECTION
 
-Apply the Boxplot Rule method to extract **notable posts** for each influencer and save them in a CSV file ("anomalies.csv").
+Apply the Boxplot Rule method to extract **notable posts** for each influencer and save them in a csv file ("anomalies.csv").
 * **Output**: the same previous Pandas DataFrame with the following column in addition:
     * **n_anomalies**: number of anomalies for each week.
 
-## CLUSTERING (Graphs creation and Louvain Community Detection algorithm)
+## CLUSTERING 
+
+### Graphs creation
+
+We build a graph for each time step, where each node represents a post, connected to other posts by a weighted edge if it has at least one hashtag in common with those posts. For the computation of the weight of the arcs, we opt to use the metric based on the Jaccard Index similarity measure.
+* **Input**:  DataFrame of notable posts (obtained in the Anomaly Detection phase);
+* **Output**: Dictionary (key,value) -> key:   string "year_week", value: NetworkX Graph object.
+
+### Louvain Community Detection algorithm
 
 * **Output**: the same previous Pandas DataFrame with the following columns in addition:
     * **community**: identification number of the community to which the post belongs;
@@ -56,7 +63,7 @@ Apply the Boxplot Rule method to extract **notable posts** for each influencer a
     * **median_clustering_coeff**: median of the clustering coefficient of the nodes in the graph.
     
 Here, the term "graph" refers to the graph of notable posts of each week.
-The ouput DataFrame is then saved in a CSV file ("communities.csv").
+The ouput DataFrame is then saved in a csv file ("communities.csv").
 
 ## WORDCLOUDS per community per week
 
