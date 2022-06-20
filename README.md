@@ -55,6 +55,7 @@ Apply the Boxplot Rule method to extract **notable posts** for each influencer a
     * **median_clustering_coeff**: median of the clustering coefficient of the nodes in the graph.
     
 Here, the term "graph" refers to the graph of notable posts of each week.
+The ouput DataFrame is then saved in a csv file ("communities.csv").
 
 ## WORDCLOUDS per community per week
 
