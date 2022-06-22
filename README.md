@@ -1,4 +1,9 @@
 
+## Prerequisites
+
+* **Python 3**;
+* **Libraries**: matplotlib, pandas, numpy, collections, networkx, graphviz, difflib, csv, re, unidecode, wordcloud, ast.
+
 # Disentangling posts on OSNs: Notable posts and topics
 
 Complete Python code of the methodology used to identify notable posts and topics on Online Social Networks.
@@ -21,29 +26,36 @@ Intermediate steps results are stored in CSV files.
 * **Output**: the same Pandas DataFrame with the following columns in addition:
     * **list_hashtags**: the list of hashtags extracted from the text of the post;
     * **expected**: number of "expected" reactions of the post;
-    * **score**: performance "score" of the post (effective reactions/expected reactions).
+    * **score**: engagement "score" of the post (effective reactions/expected reactions).
+
+## ENGAGEMENT MODELING
 
 ### Compute expected reactions for each post per influencer
 
-Find expected reactions for each post for the current influencer.
+To identify the number of likes and comments the post is expected to receive, we take the last 100 posts from a given profile and consider the reactions they obtained. In case the profile created less than 100 posts, we consider all of them.
+
+We drop the top and bottom 25% of those 100 posts in terms of reactions and compute the average number of reactions of the middle 50% of the posts.
+We consider this quantity as the expected number of reactions a post would get. 
+In literature, this is the classical **interquartile mean** (or 25% trimmed mean).
+
 * **Input**: DataFrame of all the posts of all influencers;
 * **Output**: the same DataFrame, but with the "expected" column in addition, computed for each influencer.
 
-### Compute performance score for each post
+### Compute engagement score for each post
 
-Find anomalies (notable posts) for the influencers through the Boxplot Rule method.
-* **Input**: DataFrame of all the posts of all influencers;
-* **Output**: DataFrame of notable posts of all influencers.
+When a new post of the profile is published, we consider the number of reactions it obtains and compare it to the expected value.
+A score greater than 1 indicates that the post is performing better than usual for a post of the given profile.
 
 ## ANOMALY DETECTION
 
+We want to detect posts whose score deviates significantly from the scores normally received by the profile that created the post, i.e., the outliers.
 Apply the Boxplot Rule method to extract **notable posts** for each influencer and save them in a CSV file ("anomalies.csv").
 * **Output**: the same previous Pandas DataFrame with the following column in addition:
     * **n_anomalies**: number of anomalies for each week.
 
 ## CLUSTERING 
 
-### Graphs creation
+### Graph modeling
 
 We build a graph for each time step, where each node represents a post, connected to other posts by a weighted edge if it has at least one hashtag in common with those posts. For the computation of the weight of the arcs, we opt to use the metric based on the Jaccard Index similarity measure.
 * **Input**:  DataFrame of notable posts (obtained in the Anomaly Detection phase);
@@ -69,7 +81,6 @@ The ouput DataFrame is then saved in a CSV file ("communities.csv").
 ## WORDCLOUDS per community per week
 
 This is the final output. It is necessary to select a year and a week and the ouput will be a **wordcloud** (a visual representation of a text, with the characteristic of attributing a larger font to the more frequent terms) of the hashtags for each community of the selected week.
-
 ## Authors
 
 - Paola Caso [@paola2108](https://github.com/paola2108)
@@ -80,6 +91,4 @@ This is the final output. It is necessary to select a year and a week and the ou
 ## Acknowledgements
 
 This work has been supported by the FacciamolaFacile grant funded by Fondazione TIM for the project 'Reading (\&) Machine' and by the SmartData@PoliTO center for Big Data and Data Science.
-
-
 
