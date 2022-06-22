@@ -1,13 +1,13 @@
 
-## Prerequisites
-
-* **Python 3**;
-* **Libraries**: matplotlib, pandas, numpy, collections, networkx, graphviz, difflib, csv, re, unidecode, wordcloud, ast.
-
 # Disentangling posts on OSNs: Notable posts and topics
 
 Complete Python code of the methodology used to identify notable posts and topics on Online Social Networks.
 Intermediate steps results are stored in CSV files.
+
+## Prerequisites
+
+* **Python 3**;
+* **Libraries**: matplotlib, pandas, numpy, collections, networkx, graphviz, difflib, csv, re, unidecode, wordcloud, ast.
 
 ## Dataset transformation
 
