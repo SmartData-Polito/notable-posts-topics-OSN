@@ -1,7 +1,8 @@
 
 # Disentangling the Information Flood on OSNs: Finding Notable Posts and Topics
 
-This work is part of a paper under review at ASONAM2022.
+This work is part of the paper:
+P.Caso, M. Trevisan, and L. Vassio, “Disentangling the Information Flood on OSNs: Finding Notable Posts and Topics” under review at 2022 IEEE/ACM International Conference on Advances in Social Networks Analysis and Mining (ASONAM).
 
 Complete Python code of the methodology used to identify notable posts and topics on Online Social Networks.
 In this repository there are two files:
