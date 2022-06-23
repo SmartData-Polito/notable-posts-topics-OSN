@@ -1,34 +1,50 @@
 
-# Disentangling posts on OSNs: Notable posts and topics
+# Disentangling the Information Flood on OSNs: Finding Notable Posts and Topics
+
+This work is part of a paper under review at ASONAM2022.
 
 Complete Python code of the methodology used to identify notable posts and topics on Online Social Networks.
+In this repository there are two files:
+* Influencers_list_Instagram.csv: the list of profiles (politicians, athletes, musicians) and Instagram influencers (food bloggers, travel bloggers, etc.);
+* METHODOLOGY.ipynb: Jupyter Notebook of the complete code (Python 3).
 Intermediate steps results are stored in CSV files.
 
 ## Prerequisites
 
 * **Python 3**;
-* **Libraries**: matplotlib, pandas, numpy, collections, networkx, graphviz, difflib, csv, re, unidecode, wordcloud, ast.
+* **Libraries**: matplotlib, pandas, numpy, collections, networkx, community, graphviz, difflib, csv, re, unidecode, wordcloud, ast.
 
-## Dataset transformation
+## STEP 0: Dataset transformation
+
+* Remove posts with expected reactions equal to 0;
+* Extract hashtags from the text in the description of a post;
+* Unidecode words, remove emojis and insignificant (too frequent) hashtags;
+* Remove posts of influencers with zero followers at the publication date of the post.
+
 
 * **Input**: a Pandas DataFrame (df_influencers) with columns:
     * **postID**: id of the post;
     * **AccountID**: id of the influencer account that published the post;
-    * **name**: name of the influencer account that published the post;
     * **date**: exact publication date of the post;
     * **year**: year of publication of the post;
     * **week**: week of publication of of the post;
-    * **description**: text of the post;
-    * **reactions**: number of "likes" and "comments" effectively received by the post;
+    * **description**: text of the post, including the hashtags;
+    * **reactions**: number of "reactions" (for Instagram, sum of likes" and "comments") effectively received by the post;
     * **followers**: number of followers of the influencer at the time of the publication of the post.
     
     
-* **Output**: the same Pandas DataFrame with the following columns in addition:
-    * **list_hashtags**: the list of hashtags extracted from the text of the post;
+* **Output**: the same Pandas DataFrame (df_influencers) with the following column in addition:
+    * **list_hashtags**: the list of hashtags extracted from the text of the post (description);
+    
+The new DataFrame is named df_influencers_purged.
+
+## STEP 1: ENGAGEMENT MODELING
+
+* **Output**: the same Pandas DataFrame (df_influencers_purged) with the following columns in addition:
     * **expected**: number of "expected" reactions of the post;
     * **score**: engagement "score" of the post (effective reactions/expected reactions).
-
-## ENGAGEMENT MODELING
+    
+The new DataFrame is named df_expected.
 
 ### Compute expected reactions for each post per influencer
 
@@ -46,24 +62,24 @@ In literature, this is the classical **interquartile mean** (or 25% trimmed mean
 When a new post of the profile is published, we consider the number of reactions it obtains and compare it to the expected value.
 A score greater than 1 indicates that the post is performing better than usual for a post of the given profile.
 
-## ANOMALY DETECTION
+## STEP 2: ANOMALY DETECTION
 
 We want to detect posts whose score deviates significantly from the scores normally received by the profile that created the post, i.e., the outliers.
 Apply the Boxplot Rule method to extract **notable posts** for each influencer and save them in a CSV file ("anomalies.csv").
-* **Output**: the same previous Pandas DataFrame with the following column in addition:
+* **Output**: the same previous Pandas DataFrame (df_expected) with the following column in addition:
     * **n_anomalies**: number of anomalies for each week.
 
-## CLUSTERING 
+The new DataFrame is named df_outliers.
 
-### Graph modeling
+## STEP 3: GRAPH MODELING
 
 We build a graph for each time step, where each node represents a post, connected to other posts by a weighted edge if it has at least one hashtag in common with those posts. For the computation of the weight of the arcs, we opt to use the metric based on the Jaccard Index similarity measure.
 * **Input**:  DataFrame of notable posts (obtained in the Anomaly Detection phase);
 * **Output**: Dictionary (key,value) -> key:   string "year_week", value: NetworkX Graph object.
 
-### Louvain Community Detection algorithm
+## STEP 4: LOUVAIN COMMUNITY DETECTION ALGORITHM
 
-* **Output**: the same previous Pandas DataFrame with the following columns in addition:
+* **Output**: the same previous Pandas DataFrame (df_outliers) with the following columns in addition:
     * **community**: identification number of the community to which the post belongs;
     * **degree**: degree of the node (post) in the graph;
     * **clustering_coeff**: clustering coefficient of the node (post) in the graph;
@@ -76,9 +92,9 @@ We build a graph for each time step, where each node represents a post, connecte
     * **median_clustering_coeff**: median of the clustering coefficient of the nodes in the graph.
     
 Here, the term "graph" refers to the graph of notable posts of each week.
-The ouput DataFrame is then saved in a CSV file ("communities.csv").
+The ouput DataFrame (df_communities) is then saved in a CSV file ("communities.csv").
 
-## WORDCLOUDS per community per week
+## STEP 5: WORDCLOUDS per community per week
 
 This is the final output. It is necessary to select a year and a week and the ouput will be a **wordcloud** (a visual representation of a text, with the characteristic of attributing a larger font to the more frequent terms) of the hashtags for each community of the selected week.
 ## Authors
