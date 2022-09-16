@@ -1,9 +1,6 @@
 
 # Disentangling the Information Flood on OSNs: Finding Notable Posts and Topics
 
-This work is part of the paper:
-
-P. Caso, M. Trevisan, and L. Vassio, “Disentangling the Information Flood on OSNs: Finding Notable Posts and Topics”, currently under review.
 
 Complete Python code of the methodology used to identify notable posts and topics on Online Social Networks.
 In this repository there are two files:
